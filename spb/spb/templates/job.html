@@ -1,0 +1,117 @@
+{% extends "base.html" %} {% block content %}
+
+<h2></h2>
+<!-- code to display list of jobs-->
+<table>
+  <tr>
+    <th>Customer</th>
+    <th>Total Cost</th>
+    <th>Job Date</th>
+    <th>Completed</th>
+    <th>Paid</th>
+  </tr>
+  <tr>
+    {% for field in job[0] %}
+    <td>{{field}}</td>
+    {% endfor %}
+  </tr>
+</table>
+{% if job[0][3] == "No" %}
+<form action="{{jobId}}/complete" method="POST">
+    <input type="submit" value="Complete Job" />
+</form>
+{% endif %}
+
+{% if job[0][3] == "Yes" %}
+<form action="{{jobId}}/restore" method="POST">
+    <input type="submit" value="Restore Job" />
+</form>
+{% endif %}
+
+<h3>Services</h3>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Quantity</th>
+    <th>Actions</th>
+  </tr>
+  {% for item in existingServices %}
+  <tr>
+    {% for field in item %} {% if loop.index == 3 or loop.index == 4 %} {% else %}
+    <td>{{field}}</td>
+    {% endif %} {% endfor %}
+    <td>
+      <form action="{{jobId}}/changeserviceqty" method="POST">
+        <input type="hidden" value="{{item[3]}}" name="service">
+        <input type="number" value="{{item[2]}}" name="quantity" {% if job[0][3] == "Yes" %}disabled{% endif%}/>
+        <input type="submit" value="Change" {% if job[0][3] == "Yes" %}disabled{% endif%}/>
+      </form>
+    </td>
+    <td>
+    {% if job[0][3] == "No" %}
+      <form action="{{jobId}}/deleteservice" method="POST">
+        <input type="hidden" value="{{item[3]}}" name="service">
+        <input type="submit" value="Delete" />
+      </form>
+    </td>
+    {% endif%}
+  </tr>
+  {% endfor %}
+</table>
+{% if job[0][3] == "No" %}
+<form action="{{jobId}}/addservice" method="POST">
+  <select name="service">
+    {% for service in services %}
+    <option value="{{service[0]}}">{{service[1]}} ${{service[2]}}</option>
+    {% endfor %}
+  </select>
+  <input type="number" value="0" name="quantity" />
+  <input type="submit" value="Add" />
+</form>
+{% endif%}
+<h3>Parts</h3>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Quantity</th>
+    <th>Actions</th>
+  </tr>
+  {% for item in existingParts %}
+  <tr>
+    {% for field in item %} {% if loop.index == 3 or loop.index == 4 %} {% else %}
+    <td>{{field}}</td>
+    {% endif %} {% endfor %}
+    <td>
+        <form action="{{jobId}}/changepartqty" method="POST">
+          <input type="hidden" value="{{item[3]}}" name="part">
+          <input type="number" value="{{item[2]}}" name="quantity" {% if job[0][3] == "Yes" %}disabled{% endif%}/>
+          <input type="submit" value="Change" {% if job[0][3] == "Yes" %}disabled{% endif%}/>
+        </form>
+      </td>
+      <td>
+        {% if job[0][3] == "No" %}
+        <form action="{{jobId}}/deletepart" method="POST">
+          <input type="hidden" value="{{item[3]}}" name="part">
+          <input type="submit" value="Delete" />
+        </form>
+        {% endif%}
+      </td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% if job[0][3] == "No" %}
+<form action="{{jobId}}/addpart" method="POST">
+  <select name="part">
+    {% for part in parts %}
+    <option value="{{part[0]}}">{{part[1]}} ${{part[2]}}</option>
+    {% endfor %}
+  </select>
+  <input type="number" value="0" name="quantity" />
+  <input type="submit" value="Add" />
+</form>
+{% endif%}
+
+{% endblock %}

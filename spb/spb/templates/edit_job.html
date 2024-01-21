@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2></h2>
+<!-- code to display list of jobs-->
+<table>
+    
+    <tr>
+        <th>Customer</th>
+        <th>Total Cost</th>
+        <th>Job Date</th>
+        <th>Completed</th>
+        <th>Paid</th>
+    </tr>
+    <tr>
+        {% for field in job[0] %}
+        <td>{{field}}</td>
+        {% endfor %}
+    </tr>
+</table>
+
+<h4>Add Service</h4>
+<form action="addservice" method="POST">
+    <select name="service">
+        {% for service in services %}
+            <option value="{{service[0]}}">{{service[1]}} ${{service[2]}}</option>
+        {%  endfor %}
+    </select>
+    <input type="number" value="0" name="quantity">
+    <input type="submit"/>
+</form>
+
+<h4>Add Part</h4>
+<form action="addpart" method="POST">
+    <select name="part">
+        {% for part in parts %}
+            <option value="{{part[0]}}">{{part[1]}} ${{part[2]}}</option>
+        {%  endfor %}
+    </select>
+    <input type="number" value="0" name="quantity">
+    <input type="submit"/>
+</form>
+
+
+{% endblock %}

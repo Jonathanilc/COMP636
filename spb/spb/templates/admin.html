@@ -1,0 +1,15 @@
+{% extends "base.html" %} {% block content %}
+
+<h2>admin</h2>
+
+<ul>
+    <li><a href="{{ url_for('customers') }}">Customers</a></li>
+    <li><a href="{{ url_for('services') }}">Services</a></li>
+    <li><a href="{{ url_for('parts') }}">Parts</a></li>
+    <li><a href="{{ url_for('scheduleJob') }}">Schedule job</a></li>
+    <li><a href="{{ url_for('unpaidBills') }}">Unpaid bills</a></li>
+    <li><a href="{{ url_for('overdueBills') }}">Overdue bills</a></li>
+</ul>
+{% block page %}{% endblock %}
+
+{% endblock %}
